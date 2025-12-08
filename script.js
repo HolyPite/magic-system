@@ -1,6 +1,59 @@
-// --- Firebase Setup ---
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+// --- Firebase Setup (Compat Mode) ---
+// Using global 'firebase' object from CDN scripts in index.html
+
+
+const ELEMENTS_DATA = {
+    "Feu": {
+        "Feu": "Plasma chaud",
+        "Eau": "Pétrol/Huile",
+        "Air": "Fumée",
+        "Terre": "Explosif",
+        "Lumière": "Feu céleste",
+        "Ténèbre": "Feu spirituel"
+    },
+    "Eau": {
+        "Feu": "Vapeur",
+        "Eau": "Eau pure",
+        "Air": "Brume",
+        "Terre": "Eau trouble",
+        "Lumière": "Eau bénite",
+        "Ténèbre": "Poison"
+    },
+    "Air": {
+        "Feu": "Tempête",
+        "Eau": "Nuage",
+        "Air": "Gaz",
+        "Terre": "Sable",
+        "Lumière": "Son",
+        "Ténèbre": "Vide"
+    },
+    "Terre": {
+        "Feu": "Magma",
+        "Eau": "Boue/Argile",
+        "Air": "Erosion",
+        "Terre": "Roche",
+        "Lumière": "Cristaux",
+        "Ténèbre": "Miasme"
+    },
+    "Lumière": {
+        "Feu": "Laser",
+        "Eau": "Lumière prismatique",
+        "Air": "Illusion",
+        "Terre": "Vie",
+        "Lumière": "Divin",
+        "Ténèbre": "Dualité"
+    },
+    "Ténèbre": {
+        "Feu": "Ombre",
+        "Eau": "Lien/Pacte",
+        "Air": "Psychique",
+        "Terre": "Os",
+        "Lumière": "Eclipse",
+        "Ténèbre": "Néant"
+    }
+};
+
+const BASE_ELEMENTS = ["Feu", "Eau", "Air", "Terre", "Lumière", "Ténèbre"];
 
 const firebaseConfig = {
     apiKey: "AIzaSyBCbfDIdSPvubiAxCKFUZfqXkidNh7qqLI",
@@ -12,9 +65,18 @@ const firebaseConfig = {
     measurementId: "G-W5EXQDV0J2"
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const lexiconCollection = collection(db, "lexique");
+// Uses the default app initialized below
+// Let's protect it in case of network issues (though script tags should load if online)
+let db;
+let lexiconCollection;
+
+try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.firestore();
+    lexiconCollection = db.collection("lexique");
+} catch (e) {
+    console.warn("Firebase initialization failed (offline?):", e);
+}
 
 // --- Constants & Mappings ---
 
@@ -119,11 +181,7 @@ const INITIAL_LEXIQUE = [
 ];
 
 async function checkAndSeed() {
-    const q = query(lexiconCollection);
-    // Just check if empty
-    // We can't use getCountFromServer easily in v9 modular without importing it, 
-    // but we can just listen to the first snapshot.
-    // Actually, let's just use the snapshot listener we already have.
+    // stub removed
 }
 
 // --- Translation Functions ---
@@ -241,12 +299,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- Auto-Lexicon Logic (Firebase) ---
             const normalizedFr = normalizeText(w);
-            if (normalizedFr.length > 1 && rune) {
+            if (normalizedFr.length > 1 && rune && lexiconCollection) {
                 // Check if exists in local cache
                 const exists = LEXIQUE.find(item => item.fr === normalizedFr);
                 if (!exists) {
-                    // Add to Firestore
-                    addDoc(lexiconCollection, {
+                    // Add to Firestore (Compat)
+                    lexiconCollection.add({
                         fr: normalizedFr,
                         rune: rune,
                         createdAt: new Date()
@@ -332,26 +390,84 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- Real-time Listener & Seeding ---
-    const q = query(lexiconCollection, orderBy("fr"));
-    onSnapshot(q, (snapshot) => {
-        if (snapshot.empty && INITIAL_LEXIQUE.length > 0) {
-            console.log("Database empty. Seeding...");
-            INITIAL_LEXIQUE.forEach(item => {
-                addDoc(lexiconCollection, {
-                    ...item,
-                    createdAt: new Date()
-                }).catch(e => console.error("Seed error", e));
-            });
-            return; // Snapshot will fire again after adds
-        }
+    if (lexiconCollection) {
+        // Compat syntax: collection.orderBy(...).onSnapshot(...)
+        lexiconCollection.orderBy("fr").onSnapshot((snapshot) => {
+            if (snapshot.empty && INITIAL_LEXIQUE.length > 0) {
+                console.log("Database empty. Seeding...");
+                INITIAL_LEXIQUE.forEach(item => {
+                    lexiconCollection.add({
+                        ...item,
+                        createdAt: new Date()
+                    }).catch(e => console.error("Seed error", e));
+                });
+                return; // Snapshot will fire again after adds
+            }
 
-        LEXIQUE = [];
-        snapshot.forEach((doc) => {
-            LEXIQUE.push(doc.data());
+            LEXIQUE = [];
+            snapshot.forEach((doc) => {
+                LEXIQUE.push(doc.data());
+            });
+            renderLexicon(lexiconSearch.value);
+            console.log("Lexicon updated from DB:", LEXIQUE.length, "words");
+        }, (error) => {
+            console.error("Error getting lexicon:", error);
+            // Fallback if permission denied or offline
         });
+    } else {
+        console.log("Firebase not available. Using static INITIAL_LEXIQUE.");
+        LEXIQUE = [...INITIAL_LEXIQUE];
         renderLexicon(lexiconSearch.value);
-        console.log("Lexicon updated from DB:", LEXIQUE.length, "words");
-    });
+    }
+
+    // --- Grimoire Logic ---
+    const hexGrid = document.getElementById('hex-grid');
+    const grimoireDetails = document.getElementById('grimoire-details');
+
+    function renderGrimoire() {
+        hexGrid.innerHTML = "";
+        BASE_ELEMENTS.forEach(element => {
+            const div = document.createElement('div');
+            div.className = 'hex-item';
+            div.innerHTML = `
+                <div class="inner">
+                    <div class="rune-preview">${translateImperatif(element)}</div>
+                    <div class="element-name">${element}</div>
+                </div>
+            `;
+            div.addEventListener('click', () => showCombinations(element, div));
+            hexGrid.appendChild(div);
+        });
+    }
+
+    function showCombinations(baseElement, activeDiv) {
+        // Highlight active
+        document.querySelectorAll('.hex-item').forEach(el => el.classList.remove('active'));
+        activeDiv.classList.add('active');
+
+        const combinations = ELEMENTS_DATA[baseElement];
+        if (!combinations) return;
+
+        let html = `<div class="combination-display">
+            <h3>Combinaisons avec ${baseElement} <span class="combo-rune">${translateImperatif(baseElement)}</span></h3>`;
+
+        for (const [modifier, result] of Object.entries(combinations)) {
+            const resultRune = translateImperatif(result);
+            html += `
+                <div class="combo-row">
+                    <span class="combo-element">+ ${modifier}</span>
+                    <span class="combo-result">${result}</span>
+                    <span class="combo-rune">${resultRune}</span>
+                </div>
+            `;
+        }
+        html += `</div>`;
+        grimoireDetails.innerHTML = html;
+    }
+
+    // Initialize Grimoire
+    renderGrimoire();
+
 });
 
 function copyToClipboard(elementId) {
