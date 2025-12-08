@@ -33,7 +33,7 @@ verbes_imperatif = [
 
 verbes_imperatif.sort()
 
-nom_fichier = "lexique_magique.md"
+nom_fichier = "../Docs/lexique_magique.md"
 
 with open(nom_fichier, "w", encoding="utf-8") as f:
     f.write("# Grimoire des Runes (Lexique Étendu)\n\n")

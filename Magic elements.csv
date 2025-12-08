@@ -1,0 +1,37 @@
+Base,Modificateur,Résultat
+Feu,Feu,Plasma chaud
+Feu,Eau,Pétrol/Huile
+Feu,Air,Fumée
+Feu,Terre,Explosif
+Feu,Lumière,Feu céleste
+Feu,Ténèbre,Feu spirituel
+Eau,Feu,Vapeur
+Eau,Eau,Eau pure(déminéralisé)
+Eau,Air,Brume
+Eau,Terre,Eau trouble
+Eau,Lumière,Eau bénite
+Eau,Ténèbre,Poison
+Air,Feu,Tempête
+Air,Eau,Nuage
+Air,Air,Gaz
+Air,Terre,Sable
+Air,Lumière,Son
+Air,Ténèbre,Vide
+Terre,Feu,Magma
+Terre,Eau,Boue/Argile
+Terre,Air,Erosion/Fragilisation
+Terre,Terre,Roche
+Terre,Lumière,Cristaux
+Terre,Ténèbre,Miasme/Maladie
+Lumière,Feu,Laser
+Lumière,Eau,Lumière prismatique
+Lumière,Air,Illusion/Mirage
+Lumière,Terre,Vie
+Lumière,Lumière,Divin
+Lumière,Ténèbre,Dualité
+Ténèbre,Feu,Ombre
+Ténèbre,Eau,Lien/Pacte
+Ténèbre,Air,Psychique
+Ténèbre,Terre,Os
+Ténèbre,Lumière,Eclipse
+Ténèbre,Ténèbre,Néant
