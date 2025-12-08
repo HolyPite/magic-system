@@ -31,8 +31,12 @@ def generer_rune_magique(mot):
         'D': '𐤃', # Dalet (Porte / Triangle)
         'E': '𐤄', # He (Prière / E inversé) - Souvent supprimé en Abjad
         
-        # W, V, F, U -> Remplacé par TET (Roue/Croix cerclée) car WAW ressemble trop à Y
-        'F': '𐤈', 'V': '𐤈', 'W': '𐤈', 'U': '𐤈', 
+        
+        # W, U -> Remplacé par TET (Roue/Croix cerclée)
+        # F, V -> Remplacé par TSADE et QOPH car TET est surchargé
+        'F': '𐤑', # Tsade (Hameçon / Faux)
+        'V': '𐤒', # Qoph (Aiguille / Sucette) - On déplace Q sur K
+        'W': '𐤈', 'U': '𐤈', 
         
         # H -> He (On garde He ou on supprime H muet)
         'H': '𐤄', 
@@ -46,7 +50,7 @@ def generer_rune_magique(mot):
         'N': '𐤍', # Nun (Serpent)
         'O': '𐤏', # Ayin (Oeil / Cercle) - Souvent supprimé en Abjad
         'P': '𐤐', # Pe (Bouche / 7 courbe)
-        'Q': '𐤒', # Qop (Singe / Sucette)
+        'Q': '𐤊', # Qop -> Déplacé sur Kaph (K) pour libérer Qop pour V
         'R': '𐤓', # Rosh (Tête / 4 inversé)
         
         # S, Z, X -> Remplacé par SAMEKH (Pilier) car SHIN ressemble trop à W
@@ -54,6 +58,10 @@ def generer_rune_magique(mot):
         
         # T -> Remplacé par HET (Échelle) car TAW ressemble trop à X
         'T': '𐤇', 
+        
+        # Ajouts explicites pour éviter confusion
+        'Tsade': '𐤑',
+        'Qoph': '𐤒',
     }
 
     # Voyelles à supprimer (Sauf au début)
