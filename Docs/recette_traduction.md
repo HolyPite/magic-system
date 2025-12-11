@@ -27,10 +27,11 @@ Nous utilisons des lettres phéniciennes spécifiques pour éviter toute confusi
 | :--- | :--- | :--- | :--- | :--- |
 | **A** | **𐤀** | Aleph | Tête de boeuf | Classique |
 | **B** | **𐤁** | Bet | 9 / Maison | Classique |
-| **C, G, K** | **𐤂 / 𐤊** | Gimel / Kap | 1 / Trident | Classique |
+| **C, G, K, Q** | **𐤂 / 𐤊** | Gimel / Kap | 1 / Trident | Kap prend K et Q |
 | **D** | **𐤃** | Dalet | Triangle | Classique |
 | **E** | **𐤄** | He | E inversé | (Souvent supprimé) |
-| **F, V, W, U** | **𐤈** | **Ṭēt** | **Roue ⊕** | Remplace le `𐤅` (trop 'Y') |
+| **F** | **𐤑** | **Tsade** | **Hameçon** | Remplace le `𐤅` |
+| **W, U** | **𐤈** | **Ṭēt** | **Roue ⊕** | Remplace le `𐤅` (trop 'Y') |
 | **H** | **𐤄** | He | E inversé | Classique |
 | **I, J, Y** | **𐤉** | **Yōd** | **Bras / Z** | (Validé) |
 | **L** | **𐤋** | Lamed | Bâton courbe | Classique |
@@ -38,7 +39,7 @@ Nous utilisons des lettres phéniciennes spécifiques pour éviter toute confusi
 | **N** | **𐤍** | Nun | Serpent | Classique |
 | **O** | **𐤏** | Ayin | Cercle | (Souvent supprimé) |
 | **P** | **𐤐** | Pe | 7 courbe | Classique |
-| **Q** | **𐤒** | Qop | Sucette | Classique |
+| **V** | **𐤒** | **Qop** | **Sucette** | Remplace le `𐤒` (Q) |
 | **R** | **𐤓** | Rosh | 4 inversé | Classique |
 | **S, Z, X** | **𐤎** | **Samekh** | **Pilier / Arête** | Remplace le `𐤔` (trop 'W') |
 | **T** | **𐤇** | **Ḥēt** | **Échelle** | Remplace le `𐤕` (trop 'X') |

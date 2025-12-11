@@ -1,0 +1,141 @@
+[
+  {
+    "id": "sort_feu_basique",
+    "nom": "Trait de Feu",
+    "description": "Un simple projectile de feu lancé immédiatement.",
+    "source": {
+      "type": "ACTIVATOR",
+      "symbole": "YOD (𐤉)"
+    },
+    "flux": {
+      "type": "HORAIRE (AUTO)",
+      "cout_mana": 10
+    },
+    "sequence_assemblage": [
+      {
+        "position": 1,
+        "type": "ELEMENT_SIMPLE",
+        "base": "FEU",
+        "resultat": "Feu"
+      }
+    ],
+    "perimetre": {
+      "runes": [],
+      "scellement": false
+    }
+  },
+  {
+    "id": "piege_boue_differe",
+    "nom": "Piège de Boue",
+    "description": "Un cercle inscrit au sol qui attend une activation pour créer un bourbier.",
+    "source": {
+      "type": "OBJECT",
+      "symbole": "TET (𐤈)"
+    },
+    "flux": {
+      "type": "ANTI_HORAIRE (MANUEL/DIFFERE)",
+      "cout_armement": 200,
+      "cout_activation": 20
+    },
+    "sequence_assemblage": [
+      {
+        "position": 1,
+        "type": "INTRICATION",
+        "base": "TERRE",
+        "modificateur": "EAU",
+        "resultat": "Boue"
+      }
+    ],
+    "perimetre": {
+      "runes": [
+        {
+          "rune": "PIEGE"
+        },
+        {
+          "rune": "STAGNE",
+          "arg": 60
+        }
+      ],
+      "scellement": true
+    }
+  },
+  {
+    "id": "nuage_peste",
+    "nom": "Nuage de Peste",
+    "description": "Combinaison complexe créant un miasme toxique qui se répand sous forme de brume.",
+    "source": {
+      "type": "ACTIVATOR",
+      "symbole": "YOD (𐤉)"
+    },
+    "flux": {
+      "type": "HORAIRE (AUTO)",
+      "cout_mana": 1500
+    },
+    "sequence_assemblage": [
+      {
+        "position": 1,
+        "type": "INTRICATION",
+        "base": "TERRE",
+        "modificateur": "TENEBRE",
+        "resultat": "Miasme"
+      },
+      {
+        "position": 2,
+        "type": "INTRICATION",
+        "base": "EAU",
+        "modificateur": "AIR",
+        "resultat": "Brume"
+      }
+    ],
+    "perimetre": {
+      "runes": [
+        {
+          "rune": "DILATE",
+          "arg": 50
+        },
+        {
+          "rune": "PERSISTE",
+          "arg": 10
+        }
+      ],
+      "scellement": true
+    }
+  },
+  {
+    "id": "rituel_lumiere_divine",
+    "nom": "Aube Artificielle",
+    "description": "Rituel ambiant qui génère une lumière intense et durable.",
+    "source": {
+      "type": "AMBIENT",
+      "symbole": "QOPH (𐤒)"
+    },
+    "flux": {
+      "type": "ANTI_HORAIRE (MANUEL/DIFFERE)",
+      "cout_armement": 5000,
+      "cout_activation": 100
+    },
+    "sequence_assemblage": [
+      {
+        "position": 1,
+        "type": "INTRICATION",
+        "base": "LUMIERE",
+        "modificateur": "LUMIERE",
+        "resultat": "Divin"
+      },
+      {
+        "position": 2,
+        "type": "ELEMENT_SIMPLE",
+        "base": "FEU",
+        "resultat": "Chaleur"
+      }
+    ],
+    "perimetre": {
+      "runes": [
+        "ILLUMINE",
+        "AMPLIFIE",
+        "PRESERVE"
+      ],
+      "scellement": true
+    }
+  }
+]
